@@ -2,8 +2,8 @@
 let firstrun=0
 if !filereadable(expand("~/.vim/autoload/plug.vim"))
   let firstrun=1
-  silent !mkdir -p ~/.config/nvim/{autoload,undo,backups}
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  silent !mkdir -p ~/.vim/{autoload,undo,backups}
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
 call plug#begin('~/.vim/plugged')
