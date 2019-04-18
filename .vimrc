@@ -1,4 +1,3 @@
-
 let firstrun=0
 if !filereadable(expand("~/.vim/autoload/plug.vim"))
   let firstrun=1
@@ -15,6 +14,9 @@ Plug 'tpope/vim-sleuth'
 
 " surround with...
 Plug 'tpope/vim-surround'
+
+" Auto close brackets on enter
+Plug 'rstacruz/vim-closer'
 
 " Repeat for plugins
 Plug 'tpope/vim-repeat'
@@ -35,6 +37,15 @@ Plug 'airblade/vim-gitgutter'
 
 " nicer status bar
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+let g:airline_powerline_fonts = 1
+" requires powerline fonts installed from https://github.com/powerline/fonts
+if has("gui_running")
+   let s:uname = system("uname")
+   if s:uname == "Darwin\n"
+      set guifont=Meslo\ LG\ S\ Regular\ for\ Powerline:h12
+   endif
+endif
 
 " syntax highlighting
 Plug 'scrooloose/syntastic'
@@ -53,7 +64,7 @@ Plug 'tpope/vim-salve'
 Plug 'tpope/vim-fireplace'
 Plug 'vim-scripts/paredit.vim'
 Plug 'luochen1990/rainbow'
-Plug 'rkneufeld/vim-boot'
+"Plug 'rkneufeld/vim-boot'
 Plug 'venantius/vim-cljfmt'
 "Plug 'venantius/vim-eastwood'
 
@@ -61,19 +72,29 @@ Plug 'venantius/vim-cljfmt'
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
 Plug 'cespare/vim-toml'
+let g:rustfmt_autosave = 1
 
 " Swift stuff
-Plug 'keith/swift.vim'
-let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
+" Plug 'keith/swift.vim'
+" let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
 
 " Elm stuff
-Plug 'elmcast/elm-vim'
+"Plug 'elmcast/elm-vim'
 
 " Crystal stuff
-Plug 'rhysd/vim-crystal'
+"Plug 'rhysd/vim-crystal'
 
 " Ruby stuff
-Plug 'vim-ruby/vim-ruby'
+"Plug 'vim-ruby/vim-ruby'
+
+" JavaScript stuff
+Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'
+
+" TypeScript stuff
+Plug 'leafgarland/typescript-vim'
+
+let g:vim_jsx_pretty_colorful_config = 1 " default 0
 
 call plug#end()
 if 1 == firstrun
@@ -97,6 +118,9 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 
+" handle make files needing tabs
+autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
+
 "set swp file storate to local ~/tmp
 set dir=~/tmp
 
@@ -116,7 +140,7 @@ set showmatch
 set hlsearch
 
 " some simpler editing commands for insert mode
-inoremap kj <ESC>
+inoremap jk <ESC>
 inoremap aa @
 inoremap '' "
 inoremap jj ->
@@ -125,8 +149,10 @@ inoremap hh &
 inoremap uu _
 " inoremap ;; :=
 
-" on lose focus, write all changed buffers
+" on lose focus, save/write all changed buffers
 au FocusLost * silent! wa
+" on change/switch buffer, save/write buffer
+set autowrite
 
 " Remove Trailing Whitespace
 nnoremap <leader>rtw :%s/\s\+$//e<CR>
@@ -147,4 +173,4 @@ let g:rainbow_active = 0
 " Syntastic recommended by elm-vim
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:elm_syntastic_show_warnings = 1
+"let g:elm_syntastic_show_warnings = 1
